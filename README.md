@@ -34,7 +34,7 @@ pip install -r requirements.txt
 ### 4. Running the Application
 
 #### Setting up files
-Before running the application, Please create `emails.txt` and `config.json` files, you can copy from `example-` files.
+Before running the application, Please create `emails-profile.txt` and `config.json` files, you can copy from `example-` files. replace `profile` with your profile number from config.
 
 #### Run Browser
 Please run chrome in debug mode, here is the code for linux, please find for windows by yourself.

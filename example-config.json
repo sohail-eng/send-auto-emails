@@ -1,6 +1,12 @@
 {
   "custom_link": "https://mail.google.com/mail/u/{profile}/?fs=1&to={email}&su={subject}&tf=cm",
-  "subject": "this-is-test-subject",
   "sleep_1": 5,
-  "sleep_2": 5
+  "sleep_2": 5,
+  "loop": 10,
+  "profiles": [
+    {
+      "profile": 0,
+      "subject": "profile-0-subject"
+    }
+  ]
 }

@@ -3,6 +3,7 @@ import json
 from .objects import Scraper
 from selenium.webdriver.common.by import By
 import time
+from .utils import get_valid_email, remove_valid_email, write_used_email
 
 
 class AutomateEmails(Scraper):
@@ -24,26 +25,30 @@ class AutomateEmails(Scraper):
         self.driver.switch_to.window(self.driver.window_handles[-1])
 
     def start_processing(self):
-        try:
-            with open("emails.txt", "r") as file:
-                emails_data = [
-                    email.strip() for email in file.read().split("\n") if email.strip()
-                ]
-        except FileNotFoundError:
-            print("Please create `emails.txt` file.")
-            exit()
+        for profile_data in self.config.get("profiles", {}):
+            subject = profile_data.get("subject", "")
+            profile = profile_data.get("profile", 0)
+            for counter in range(self.config.get("loop", 10)):
+                email = get_valid_email(profile=0)
+                if not email:
+                    continue
 
-        for email in emails_data:
-            time.sleep(self.config.get("sleep_1", 5))
-            self.send_email(
-                email=email,
-                subject=self.config.get("subject"),
-            )
+                time.sleep(self.config.get("sleep_1", 5))
+                self.send_email(
+                    profile=profile,
+                    email=email,
+                    subject=subject,
+                )
+                print(
+                    f"email sent, profile {profile}, loop {counter}, email {email}, subject {subject}"
+                )
+                write_used_email(profile=profile, email=email)
+                remove_valid_email(profile=profile, email=email)
 
-    def send_email(self, email, subject):
+    def send_email(self, profile, email, subject):
         self.driver.get(
             self.config.get("custom_link")
-            .replace("{profile}", "0")
+            .replace("{profile}", f"{profile}")
             .replace("{email}", email)
             .replace("{subject}", subject)
         )
