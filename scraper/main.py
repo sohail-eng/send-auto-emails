@@ -47,7 +47,9 @@ class AutomateEmails(Scraper):
                 remove_valid_email(profile=profile, email=email)
 
     def send_email(self, profile, email, subject):
+        counter = 0
         while True:
+            counter = counter + 1
             try:
                 self.driver.get(
                     self.config.get("custom_link")
@@ -68,4 +70,5 @@ class AutomateEmails(Scraper):
                 time.sleep(2)
                 self.driver.switch_to.window(self.driver.window_handles[-1])
                 time.sleep(1)
-                continue
+                if counter > 3:
+                    break
