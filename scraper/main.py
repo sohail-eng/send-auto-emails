@@ -10,6 +10,7 @@ from .utils import get_valid_email, remove_valid_email, write_used_email
 class AutomateEmails(Scraper):
     def __init__(self, driver=None, proxy=None):
         self.driver = driver
+        self.proxy = proxy
         try:
             with open("config.json", "r") as file:
                 self.config = json.loads(file.read())
@@ -17,10 +18,10 @@ class AutomateEmails(Scraper):
             print("Please create `config.json` file.")
             exit()
         if not self.driver:
-            self.driver = self.initialize_remotely(proxy=proxy)
             self.create_window()
 
     def create_window(self):
+        self.driver = self.initialize_remotely(proxy=self.proxy)
         self.driver.execute_script("window.open('');")
         time.sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[-1])
@@ -66,9 +67,6 @@ class AutomateEmails(Scraper):
                 )
                 break
             except NoSuchWindowException:
-                self.driver.execute_script("window.open('');")
-                time.sleep(2)
-                self.driver.switch_to.window(self.driver.window_handles[-1])
-                time.sleep(1)
+                self.create_window()
                 if counter > 3:
                     break
