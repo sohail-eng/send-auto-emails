@@ -29,8 +29,9 @@ def remove_valid_email(profile, email: str):
             emails_data = file.read()
     except FileNotFoundError:
         emails_data = ""
-    emails_data = emails_data.split("\n")
-    emails_data.remove(email)
+    emails_data = [email.strip() for email in emails_data.split("\n") if email.strip()]
+    if email.strip() in emails_data:
+        emails_data.remove(email.strip())
     temp_data = emails_data
     emails_data = []
     for item in temp_data:
