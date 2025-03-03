@@ -2,6 +2,7 @@ import json
 
 from .objects import Scraper
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchWindowException
 import time
 from .utils import get_valid_email, remove_valid_email, write_used_email
 
@@ -46,16 +47,25 @@ class AutomateEmails(Scraper):
                 remove_valid_email(profile=profile, email=email)
 
     def send_email(self, profile, email, subject):
-        self.driver.get(
-            self.config.get("custom_link")
-            .replace("{profile}", f"{profile}")
-            .replace("{email}", email)
-            .replace("{subject}", subject)
-        )
-        time.sleep(self.config.get("sleep_2", 5))
-        self.click_button(
-            element=self.get_elements_by_time(
-                by=By.XPATH,
-                value='//div[@id=":ot"]',
-            )
-        )
+        while True:
+            try:
+                self.driver.get(
+                    self.config.get("custom_link")
+                    .replace("{profile}", f"{profile}")
+                    .replace("{email}", email)
+                    .replace("{subject}", subject)
+                )
+                time.sleep(self.config.get("sleep_2", 5))
+                self.click_button(
+                    element=self.get_elements_by_time(
+                        by=By.XPATH,
+                        value='//div[@id=":ot"]',
+                    )
+                )
+                break
+            except NoSuchWindowException:
+                self.driver.execute_script("window.open('');")
+                time.sleep(2)
+                self.driver.switch_to.window(self.driver.window_handles[-1])
+                time.sleep(1)
+                continue
