@@ -31,7 +31,7 @@ class AutomateEmails(Scraper):
             subject = profile_data.get("subject", "")
             profile = profile_data.get("profile", 0)
             for counter in range(self.config.get("loop", 10)):
-                email = get_valid_email(profile=0)
+                email = get_valid_email(profile=profile)
                 if not email:
                     continue
 
