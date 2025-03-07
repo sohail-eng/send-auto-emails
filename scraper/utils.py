@@ -1,5 +1,5 @@
-def get_valid_email(profile):
-    email_file = f"emails-{profile}.txt"
+def get_valid_email():
+    email_file = "emails.txt"
     try:
         with open(email_file, "r") as file:
             emails_data = file.read()
@@ -22,8 +22,8 @@ def get_valid_email(profile):
     return email_data
 
 
-def remove_valid_email(profile, email: str):
-    email_file = f"emails-{profile}.txt"
+def remove_valid_email(email: str):
+    email_file = "emails.txt"
     try:
         with open(email_file, "r") as file:
             emails_data = file.read()
@@ -42,13 +42,16 @@ def remove_valid_email(profile, email: str):
         file.write(emails_data)
 
 
-def __write_email(email: str, file_path: str):
+def __write_email(email: str, file_path: str, time_stamp=None):
     try:
         with open(file_path, "r") as file:
             emails_data = file.read()
     except FileNotFoundError:
         emails_data = ""
     emails_data = emails_data.split("\n")
+    if time_stamp:
+        time_stamp = f".\n.\n.\n{time_stamp}\n.\n.\n."
+        emails_data.append(time_stamp)
     emails_data.append(email)
     temp_data = emails_data
     emails_data = []
@@ -60,5 +63,7 @@ def __write_email(email: str, file_path: str):
         file.write(emails_data)
 
 
-def write_used_email(profile, email):
-    __write_email(email=email, file_path=f"emails_used-{profile}.txt")
+def write_used_email(profile, email, time_stamp):
+    __write_email(
+        email=email, file_path=f"emails_used-{profile}.txt", time_stamp=time_stamp
+    )

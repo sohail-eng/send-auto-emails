@@ -1,5 +1,5 @@
 import json
-
+from datetime import datetime
 from .objects import Scraper
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchWindowException
@@ -28,10 +28,12 @@ class AutomateEmails(Scraper):
 
     def start_processing(self):
         for profile_data in self.config.get("profiles", {}):
+            current_time = datetime.now()
+            time_stamp = f"{current_time.strftime('%m-%d-%Y-%H-%M-%S')}"
             subject = profile_data.get("subject", "")
             profile = profile_data.get("profile", 0)
             for counter in range(self.config.get("loop", 10)):
-                email = get_valid_email(profile=profile)
+                email = get_valid_email()
                 if not email:
                     continue
 
@@ -44,8 +46,8 @@ class AutomateEmails(Scraper):
                 print(
                     f"email sent, profile {profile}, loop {counter}, email {email}, subject {subject}"
                 )
-                write_used_email(profile=profile, email=email)
-                remove_valid_email(profile=profile, email=email)
+                write_used_email(profile=profile, email=email, time_stamp=time_stamp)
+                remove_valid_email(email=email)
 
     def send_email(self, profile, email, subject):
         counter = 0
