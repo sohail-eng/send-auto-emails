@@ -64,7 +64,7 @@ class AutomateEmails(Scraper):
                 self.click_button(
                     element=self.get_elements_by_time(
                         by=By.XPATH,
-                        value='//div[@id=":ot"]',
+                        value='//div[@id=":or"]',
                     )
                 )
                 break

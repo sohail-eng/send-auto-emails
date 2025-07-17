@@ -16,7 +16,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
-
+from webdriver_manager.chrome import ChromeDriverManager
 
 @dataclass
 class Scraper:
@@ -49,7 +49,7 @@ class Scraper:
             if proxy:
                 options.add_argument(f"--proxy-server={proxy}")
             options.add_argument("start-maximized")
-            return webdriver.Chrome(service=Service(), options=options)
+            return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
         except Exception as e:
             logging.error("Error! creating webdriver", exc_info=e)
             return webdriver.Chrome()
