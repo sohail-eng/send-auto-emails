@@ -21,7 +21,7 @@ class AutomateEmails(Scraper):
             self.create_window()
 
     def create_window(self):
-        self.driver = self.initialize_remotely(proxy=self.proxy)
+        self.driver = self.initialize_remotely(proxy=self.proxy, port=self.config.get("port", 9222))
         self.driver.execute_script("window.open('');")
         time.sleep(2)
         self.driver.switch_to.window(self.driver.window_handles[-1])

@@ -55,11 +55,11 @@ class Scraper:
             return webdriver.Chrome()
 
     @classmethod
-    def initialize_remotely(cls, proxy=None):
+    def initialize_remotely(cls, proxy=None, port=9222):
         # try:
         # Connect to an existing Chrome session via WebSocket
         options = Options()
-        options.debugger_address = "localhost:9222"
+        options.debugger_address = f"localhost:{port}"
         if proxy:
             options.add_argument(f"--proxy-server={proxy}")
 

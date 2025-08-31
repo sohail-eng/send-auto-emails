@@ -1,4 +1,5 @@
 {
+  "port": 9222,
   "custom_link": "https://mail.google.com/mail/u/{profile}/?fs=1&to={email}&su={subject}&tf=cm",
   "sleep_1": 5,
   "sleep_2": 5,
