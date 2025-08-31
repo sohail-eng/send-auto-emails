@@ -64,7 +64,12 @@ class Scraper:
             options.add_argument(f"--proxy-server={proxy}")
 
         # Return a WebDriver instance connected to the existing session
-        return webdriver.Chrome(service=Service(), options=options)
+        try:
+            return webdriver.Chrome(service=Service("chromedriver.exe"), options=options)
+        except Exception as e:
+            print(e)
+            return webdriver.Chrome(service=Service(), options=options)
+
         # except Exception as e:
         #     logging.error("Error connecting to existing WebSocket Chrome session", exc_info=e)
         #     return None
